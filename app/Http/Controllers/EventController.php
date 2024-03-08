@@ -11,7 +11,12 @@ use Illuminate\Http\Request;
 class EventController extends Controller{
     public function index () {
         $categories = Category::all();
-        $events = Event::where('status', 'approved')->whereNotIn('user_id', [auth()->user()->id])->simplePaginate(3);
+        $user = auth()->user();
+        $events = Event::where('status', 'approved');
+        if ($user) {
+            $events = $events->whereNotIn('user_id', [auth()->user()->id]);
+        }
+        $events = $events->simplePaginate(3);
         return view('event.index', compact('events', 'categories'));
     }
 
@@ -25,31 +30,45 @@ class EventController extends Controller{
             $events = $events->where('category_id', $category);
         }
 
-        $events = $events->paginate(3)->appends(['query' => $title, 'category' => $category]);
+        $events = $events->simplePaginate(3)->appends(['query' => $title, 'category' => $category]);
         $categories = Category::all();
 
         return view('event.index', compact('events', 'categories'));
     }
 
     public function show (Event $event) {
+        # check if the event is created by this user :
+        $user = auth()->user();
+        if ($user && $event->user->id == $user->id) return redirect()->route('event__user.index');
+
+        # check if the user already reserved
+        $is_reserved = $user && Reservation::where('user_id', $user->id)->where('event_id', $event->id)->first();
+        # check for available seats
         $available_seats = (int)$event->places - Reservation::where('status', 'approved')->count();
+        # check for available time
         $is_open =  Carbon::parse($event->starting_at)->diffInSeconds(now()) > 0;
-        return view('event.show', compact('event', 'available_seats', 'is_open'));
+
+        return view('event.show', compact('event', 'is_reserved', 'available_seats', 'is_open'));
     }
 
     public function reserve(Event $event) {
-        # Check User :
-        $user = Reservation::find(auth()->user()->id);
+        $user_id = auth()->user()->id;
+        $event_id = $event->id;
+        # Check User Reservation is exists :
+        $user = Reservation::where('user_id', $user_id)->where('event_id', $event_id)->first();
 
-        if ($user) return redirect()->back();
+        if ($user) return redirect()->back()->with('message', 'Already reserved');
 
         # Add Reservation :
+        $status = $event->validation_type === 'automatic' ? 'approved' : 'pending';
         Reservation::create([
-            'user_id' => auth()->user()->id,
-            'event_id' => $event->id,
-            'status' => $event->validation_type === 'automatic' ? 'approved' : 'pending'
+            'user_id' => $user_id,
+            'event_id' => $event_id,
+            'status' => $status
         ]);
 
-        return redirect()->route('event__user.index');
+        #
+        $message = $status === 'approved' ? 'Reservation added successfully' : 'Reservation is waiting approved';
+        return redirect()->route('event__user.index')->with('message', $message);
     }
 }
