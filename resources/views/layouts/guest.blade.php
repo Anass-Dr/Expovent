@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{{ asset('assets/app/css/fontawesome-pro.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/app/css/spacing.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/app/css/main.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body class="landing-body">
@@ -146,7 +147,7 @@
                     <div class="mega__menu-wrapper p-relative">
                         <div class="header__navigation d-flex align-items-center justify-content-between">
                             <div class="header__logo">
-                                <a href="dashboard.html">
+                                <a href="/">
                                     <img class="logo__white" src="{{ asset('assets/img/logo/logo.svg') }}" alt="logo not found">
                                     <img class="logo__dark" src="{{ asset('assets/img/logo/logo-dark.svg') }}" alt="logo not found">
                                 </a>
@@ -155,55 +156,39 @@
                                 <div class="main-menu smooth d-none d-none d-lg-block">
                                     <nav id="mobile-menu">
                                         <ul>
-                                            <li class="has-dropdown has-mega-menu">
-                                                <a href="#homeindex">Home</a>
-                                                <ul class="mega-menu">
+                                            <li>
+                                                <a href="/">Home</a>
+                                            </li>
+                                            <li>
+                                                <a href="/events">Events</a>
+                                            </li>
+                                            @auth
+                                                @role('admin')
                                                     <li>
-                                                        <a href="landing-page.html" data-background="assets/img/index/landing.jpg"></a>
+                                                        <a href="/admin">Dashboard</a>
                                                     </li>
+                                                @endrole
+                                                @role('organizer')
                                                     <li>
-                                                        <a href="dashboard.html" data-background="assets/img/index/dashboard.jpg"></a>
+                                                        <a href="/organizer">Dashboard</a>
                                                     </li>
-                                                    <li>
-                                                        <a href="event-list.html" data-background="assets/img/index/event.jpg"></a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <a href="#homeabout">About</a>
-                                            </li>
-                                            <li>
-                                                <a href="#homespeakers">Speakers</a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#homeschedule">Schedule</a>
-                                            </li>
-                                            <li class="has-dropdown">
-                                                <a href="#homeblog">Blog</a>
-                                            </li>
-                                            <li>
-                                                <form action="{{ route('logout') }}" method="post">
-                                                    @csrf
-                                                    <input type="submit" value="logout" />
-                                                </form>
-                                            </li>
+                                                @endrole
+                                                <li>
+                                                    <form action="{{ route('logout') }}" method="post">
+                                                        @csrf
+                                                        <input class="element__btn red-bg" type="submit" value="logout" />
+                                                    </form>
+                                                </li>
+                                            @else
+                                                <li>
+                                                    <a href="/login">Login</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/register">Register</a>
+                                                </li>
+                                            @endauth
                                         </ul>
                                     </nav>
-                                </div>
-                                <div class="header__action-inner">
-                                    <div class="header__btn d-none d-xl-block">
-                                        <a href="dashboard.html" class="fill__btn">Buy Ticket<i class="fa-regular fa-angle-right"></i></a>
-                                    </div>
-                                    <div class="header__hamburger">
-                                        <div class="sidebar__toggle">
-                                            <a class="bar-icon" href="#">
-                                                <span></span>
-                                                <span></span>
-                                                <span></span>
-                                            </a>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>

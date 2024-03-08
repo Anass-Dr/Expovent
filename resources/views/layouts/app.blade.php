@@ -100,86 +100,52 @@
             <div class="sidebar__inner simple-bar">
                 <div class="dlabnav">
                     <ul class="metismenu" id="menu">
-                        <li>
-                            <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                <i class="flaticon-home"></i>
-                                <span class="nav-text">Dashboard</span>
-                            </a>
-                            <ul aria-expanded="false">
-                                <li><a href="dashboard.html">Dashboard</a></li>
-                                <li><a href="landing-page.html">Landing Page</a></li>
-                                <li><a href="element.html">UI Elements</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="schedule-list.html" aria-expanded="false">
-                                <i class="flaticon-calendar-1"></i>
-                                <span class="nav-text">Schedule List</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="speaker-list.html" aria-expanded="false">
-                                <i class="flaticon-speaker"></i>
-                                <span class="nav-text">Speaker List</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="attendant-list.html" aria-expanded="false">
-                                <i class="flaticon-user-1"></i>
-                                <span class="nav-text">Attendant List</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                        @role('admin')
+                            <li>
+                                <a href="/admin">
+                                    <i class="flaticon-home"></i>
+                                    <span class="nav-text">Dashboard</span>
+                                </a>
+                            </li>
+                            <li>
+                            <a href="/admin/events">
                                 <i class="flaticon-reminder"></i>
-                                <span class="nav-text">Upcomg Event</span>
-                            </a>
-                            <ul aria-expanded="false">
-                                <li><a href="create-event.html">Create Event</a></li>
-                                <li><a href="event-list.html"> Event List</a></li>
-                                <li><a href="event-details.html"> Event Details</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="calendar.html" aria-expanded="false">
-                                <i class="flaticon-calendar"></i>
-                                <span class="nav-text">Calendar</span>
+                                <span class="nav-text">Event</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="venue.html" aria-expanded="false">
-                                <i class="flaticon-map-2"></i>
-                                <span class="nav-text">Venue</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="has-arrow" href="javascript:void(0)" aria-expanded="false">
+                            <li>
+                            <a href="/admin/user">
                                 <i class="flaticon-user-1"></i>
-                                <span class="nav-text">Profile</span>
+                                <span class="nav-text">Users</span>
                             </a>
-                            <ul aria-expanded="false">
-                                <li><a href="profile.html">Profile</a></li>
-                                <li><a href="setting.html">Setting</a></li>
-                                <li><a href="chat.html">Chatbox</a></li>
-                                <li><a href="signin.html">Sign in</a></li>
-                                <li><a href="signup.html">Sign up</a></li>
-                            </ul>
                         </li>
+                            <li>
+                            <a href="/admin/category">
+                                <i class="flaticon-user-1"></i>
+                                <span class="nav-text">Categories</span>
+                            </a>
+                        </li>
+                        @else
+                            <li>
+                                <a href="/organizer">
+                                    <i class="flaticon-home"></i>
+                                    <span class="nav-text">Dashboard</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/organizer/event">
+                                    <i class="flaticon-reminder"></i>
+                                    <span class="nav-text">Event</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/organizer/reservation" aria-expanded="false">
+                                    <i class="flaticon-map-2"></i>
+                                    <span class="nav-text">Reservations</span>
+                                </a>
+                            </li>
+                        @endrole
                     </ul>
-                    <div class="sidebar__thumb mb-60 mt-50">
-                        <a href="#">
-                            <img src="{{ asset('assets/img/sidebar/sidebar.jpg') }}"
-                                alt="image not f>
-                        </a>
-                    </div>
-                    <div class="sidebar__profile
-                                mb-50">
-                            <a href="signin.html"><i class="flaticon-log-out-3"></i><span class="links_name">Log
-                                    out</span></a>
-                    </div>
-                    <div class="sidebar__copyright">
-                        <p>Copyright @ Expovent 2023</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -727,19 +693,15 @@
                         <div class="nav-item p-relative">
                             <a id="userportfolio" href="#">
                                 <div class="user__portfolio">
-                                    <div class="user__portfolio-thumb">
-                                        <img src="{{ asset('assets/img/sidebar/sidebar.jpg') }}"
-                                            alt="imge not found" />
-                                    </div>
                                     <div class="user__content">
-                                        <span>Jhon Smith</span>
+                                        <span>{{ auth()->user()->full_name }}</span>
                                     </div>
                                 </div>
                             </a>
                             <div class="user__dropdown">
                                 <ul>
                                     <li>
-                                        <a href="profile.html"><svg width="16" height="16"
+                                        <a href="/profile"><svg width="16" height="16"
                                                 viewBox="0 0 16 16" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <g clip-path="url(#clip0_643_344)">
@@ -756,21 +718,6 @@
                                             Profile</a>
                                     </li>
                                     <li>
-                                        <a href="chat.html"><svg width="18" height="17" viewBox="0 0 18 17"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M4.2 16.8C4.1118 16.8 4.023 16.7802 3.9396 16.7406C3.7326 16.6404 3.6 16.431 3.6 16.2V13.2H1.8C0.8076 13.2 0 12.3924 0 11.4V1.8C0 0.8076 0.8076 0 1.8 0H16.2C17.1924 0 18 0.8076 18 1.8V11.4C18 12.3924 17.1924 13.2 16.2 13.2H8.9106L4.575 16.6686C4.4664 16.7556 4.3338 16.8 4.2 16.8ZM1.8 1.2C1.4688 1.2 1.2 1.4694 1.2 1.8V11.4C1.2 11.7306 1.4688 12 1.8 12H4.2C4.5318 12 4.8 12.2682 4.8 12.6V14.952L8.325 12.1314C8.4318 12.0462 8.5632 12 8.7 12H16.2C16.5312 12 16.8 11.7306 16.8 11.4V1.8C16.8 1.4694 16.5312 1.2 16.2 1.2H1.8Z"
-                                                    fill="#7A7A7A" />
-                                                <path
-                                                    d="M13.8001 6.00005H4.2001C3.8683 6.00005 3.6001 5.73125 3.6001 5.40005C3.6001 5.06885 3.8683 4.80005 4.2001 4.80005H13.8001C14.1319 4.80005 14.4001 5.06885 14.4001 5.40005C14.4001 5.73125 14.1319 6.00005 13.8001 6.00005Z"
-                                                    fill="#7A7A7A" />
-                                                <path
-                                                    d="M9.0001 8.39995H4.2001C3.8683 8.39995 3.6001 8.13115 3.6001 7.79995C3.6001 7.46875 3.8683 7.19995 4.2001 7.19995H9.0001C9.3319 7.19995 9.6001 7.46875 9.6001 7.79995C9.6001 8.13115 9.3319 8.39995 9.0001 8.39995Z"
-                                                    fill="#7A7A7A" />
-                                            </svg>
-                                            chat</a>
-                                    </li>
-                                    <li>
                                         <a href="chat.html"><svg width="18" height="13" viewBox="0 0 18 13"
                                                 fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -781,20 +728,9 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="signin.html"><svg width="18" height="18" viewBox="0 0 18 18"
-                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M12.9224 9.03197C12.5765 8.86754 12.2235 8.7259 11.8644 8.60724C13.0275 7.73424 13.7812 6.34413 13.7812 4.78125C13.7812 2.14488 11.6364 0 8.99999 0C6.36359 0 4.21874 2.14488 4.21874 4.78125C4.21874 6.34585 4.97418 7.73734 6.13943 8.61016C5.07181 8.96165 4.07003 9.50858 3.19323 10.2298C1.58546 11.5522 0.4676 13.3969 0.0456193 15.4239C-0.0866386 16.059 0.0718107 16.7114 0.480256 17.2136C0.886698 17.7134 1.48938 18 2.13373 18H10.793C11.1813 18 11.4961 17.6852 11.4961 17.2969C11.4961 16.9086 11.1813 16.5938 10.793 16.5938H2.13373C1.83356 16.5938 1.65247 16.4262 1.57126 16.3264C1.43102 16.1539 1.37674 15.9295 1.42234 15.7105C2.15201 12.2056 5.24351 9.64527 8.8136 9.55892C8.87544 9.56131 8.93756 9.56251 8.99999 9.56251C9.06303 9.56251 9.12578 9.56128 9.18822 9.55885C10.2823 9.58452 11.3345 9.8342 12.3187 10.3021C12.6694 10.4687 13.0888 10.3196 13.2556 9.96885C13.4223 9.61813 13.2731 9.19868 12.9224 9.03197ZM9.17149 8.15193C9.11443 8.15091 9.05726 8.15039 8.99999 8.15039C8.94325 8.15039 8.88651 8.15095 8.82984 8.152C7.04759 8.06309 5.62499 6.58519 5.62499 4.78125C5.62499 2.92026 7.139 1.40625 8.99999 1.40625C10.861 1.40625 12.375 2.92026 12.375 4.78125C12.375 6.58474 10.9531 8.06236 9.17149 8.15193Z"
-                                                    fill="#7A7A7A" />
-                                                <path
-                                                    d="M17.2969 13.957H15.3633V12.0234C15.3633 11.6351 15.0485 11.3203 14.6602 11.3203C14.2718 11.3203 13.957 11.6351 13.957 12.0234V13.957H12.0234C11.6351 13.957 11.3203 14.2718 11.3203 14.6602C11.3203 15.0485 11.6351 15.3633 12.0234 15.3633H13.957V17.2969C13.957 17.6852 14.2718 18 14.6602 18C15.0485 18 15.3633 17.6852 15.3633 17.2969V15.3633H17.2969C17.6852 15.3633 18 15.0485 18 14.6602C18 14.2718 17.6852 13.957 17.2969 13.957Z"
-                                                    fill="#7A7A7A" />
-                                            </svg>
-                                            add acount
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="signin.html"><svg width="18" height="18" viewBox="0 0 18 18"
+                                        <form action="{{ route('logout') }}" method="post">
+                                            @csrf
+                                        <button><svg width="18" height="18" viewBox="0 0 18 18"
                                                 fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <g clip-path="url(#clip0_643_343)">
                                                     <path
@@ -819,7 +755,8 @@
                                                     </clipPath>
                                                 </defs>
                                             </svg>
-                                            Log in</a>
+                                            Logout</button>
+                                        </form>
                                     </li>
                                 </ul>
                             </div>
