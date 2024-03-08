@@ -154,17 +154,17 @@
                                             <input type="hidden" name="user_id" value="{{ $reservation->id }}">
                                             <td>
                                                 <div class="attendant__serial">
-                                                    <span>{{ $reservation->user->full_name }}</span>
+                                                    <span>{{ $reservation->full_name }}</span>
                                                 </div>
                                             </td>
                                             <td class="title">
                                                 <div class="attendant__serial">
-                                                    <span>{{ $reservation->event->title }}</span>
+                                                    <span>{{ $reservation->title }}</span>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="attendant__serial">
-                                                    <span>{{ $reservation->event->validation_type }}</span>
+                                                    <span>{{ $reservation->validation_type }}</span>
                                                 </div>
                                             </td>
                                             <td class="status">
