@@ -136,11 +136,17 @@
                                                     <div class="ticket__price-inner">
                                                         <div class="ticket__price-item">
                                                             <label>Buy now :</label>
-                                                            @if($available_seats && $is_open)
+                                                            @if($available_seats && $is_open && !$is_reserved)
                                                                 <a href="{{ route('event__user.reserve', $event->id) }}" class="unfield__input-btn">Buy ticket</a>
                                                             @else
                                                                 <button class="unfield__input-btn" disabled>Buy ticket</button>
-                                                                <span>Sorry! This is no seat available</span>
+                                                                @if(!$available_seats)
+                                                                    <span class="text-warning">Sorry! There is no seat available</span>
+                                                                @elseif(!$is_open)
+                                                                    <span class="text-warning">Event Reservation is closed</span>
+                                                                @else
+                                                                    <span class="text-warning">Already reserved</span>
+                                                                @endif
                                                             @endif
                                                         </div>
                                                     </div>
@@ -233,6 +239,10 @@
                                 <div class="event__meta-time">
                                     <ul>
                                         <li>
+                                            <span> Organizer : </span>
+                                            {{ $event->user->full_name }}
+                                        </li>
+                                        <li>
                                             <span> Date : </span>
                                             {{ $event->starting_at }}
                                         </li>
@@ -252,6 +262,10 @@
                                             <span>Seats : </span>
                                             {{ $event->places }}
                                         </li>
+                                        <li>
+                                            <span>Validation Type : </span>
+                                            {{ $event->validation_type }}
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -262,4 +276,22 @@
         </div>
     </section>
     <!-- About area end  -->
+
+    <!-- Toaster area start  -->
+    @if(Session::has('message'))
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="liveToast" class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Bootstrap</strong>
+                    <small>Just Now!</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    {{ Session::get('message') }}
+                </div>
+            </div>
+        </div>
+    @endif
+    <!-- Toaster area end  -->
+
 </x-guest-layout>

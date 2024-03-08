@@ -78,7 +78,7 @@
                     </div>
                     <div class="col-xxl-5 col-xl-4 col-lg-6">
                         <div class="banner__right-content d-flex justify-content-lg-end">
-                            <div class="banner__card-wrapper ">
+                            <div class="banner__card-wrapper ">s
                                 <div class="banner__card-inner">
                                     <span class="card__icon"></span>
                                     <span class="shape">
@@ -116,15 +116,16 @@
         <div class="container">
             <form class="" action="{{ route('event.search') }}" method="post">
                 @csrf
-                <div class="flex items-center gap-4">
-                    <input class="border border-black px-4 rounded py-2" type="search" name="title" placeholder="Search events...">
+                <div class="d-flex align-items-center gap-4">
+                    <input class="border border-black px-4 rounded py-2" type="search" name="title"
+                           placeholder="Search events...">
                     <select name="category" class="border border-black px-4 rounded py-2">
                         <option value="">Select a category:</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
-                    <button class="btn btn-sm btn-info">
+                    <button class="element__btn blue-bg px-3" style="height: 35px">
                         submit
                     </button>
                 </div>
@@ -152,7 +153,8 @@
                                     </div>
                                     <div class="event__venue-thumb">
                                         <a href="{{ route('event__user.show', $event->title) }}">
-                                            <img src="{{ asset('assets/img/venue/venue-01.jpg') }}" alt="image not found">
+                                            <img src="{{ asset('assets/img/venue/venue-01.jpg') }}"
+                                                 alt="image not found">
                                         </a>
                                         <div class="event__tag-post">
                                             <div class="event__tag-item">
@@ -170,7 +172,160 @@
                 </div>
             </div>
         </div>
-    {{ $events->links() }}
+        {{ $events->links() }}
     </section>
     <!-- About area end  -->
+
+    <!-- Toaster area start  -->
+    @if(Session::has('message'))
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="liveToast" class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Bootstrap</strong>
+                    <small>Just Now!</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    {{ Session::get('message') }}
+                </div>
+            </div>
+        </div>
+    @endif
+    <!-- Toaster area end  -->
+
+    <!-- Pdf template area start  -->
+
+    <style>
+        #ticket_div {
+            display: none;
+        }
+        .modal-body {
+            background-color: #fff;
+            border-color: #fff;
+
+        }
+
+
+        .close {
+            color: #000;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+
+        .theme-color{
+
+            color: #004cb9;
+        }
+        hr.new1 {
+            border-top: 2px dashed #fff;
+            margin: 0.4rem 0;
+        }
+
+
+        .btn-primary {
+            color: #fff;
+            background-color: #004cb9;
+            border-color: #004cb9;
+            padding: 12px;
+            padding-right: 30px;
+            padding-left: 30px;
+            border-radius: 1px;
+            font-size: 17px;
+        }
+
+
+        .btn-primary:hover {
+            color: #fff;
+            background-color: #004cb9;
+            border-color: #004cb9;
+            padding: 12px;
+            padding-right: 30px;
+            padding-left: 30px;
+            border-radius: 1px;
+            font-size: 17px;
+        }
+
+    </style>
+    <div id="ticket_div">
+        <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body ">
+                        <div class="text-right"> <i class="fa fa-close close" data-dismiss="modal"></i> </div>
+
+                        <div class="px-4 py-5">
+
+                            <h5 class="text-uppercase">Jonathan Adler</h5>
+
+
+
+                            <h4 class="mt-5 theme-color mb-5">Thanks for your order</h4>
+
+                            <span class="theme-color">Payment Summary</span>
+                            <div class="mb-3">
+                                <hr class="new1">
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <span class="font-weight-bold">Ether Chair(Qty:1)</span>
+                                <span class="text-muted">$1750.00</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <small>Shipping</small>
+                                <small>$175.00</small>
+                            </div>
+
+
+                            <div class="d-flex justify-content-between">
+                                <small>Tax</small>
+                                <small>$200.00</small>
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-3">
+                                <span class="font-weight-bold">Total</span>
+                                <span class="font-weight-bold theme-color">$2125.00</span>
+                            </div>
+
+
+
+                            <div class="text-center mt-5">
+
+
+                                <button class="btn btn-primary">Track your order</button>
+
+
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Pdf template area end  -->
+
+    <script>
+        const template = document.querySelector('#ticket_div .modal');
+        const opt = {
+            margin: 1,
+            filename: 'ticket.pdf',
+            image: {type: 'png', quality: 0.98},
+            html2canvas: {scale: 2},
+            jsPDF: {unit: 'in', format: 'letter', orientation: 'portrait'}
+        };
+
+        // New Promise-based usage:
+        html2pdf().set(opt).from(template).toPdf().save();
+    </script>
+
 </x-guest-layout>

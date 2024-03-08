@@ -1,3 +1,6 @@
+$(document).ready(function(){
+    $('.toast').toast('show');
+});
 
 (function ($) {
 	"use strict";
