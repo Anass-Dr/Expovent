@@ -9,10 +9,18 @@ use App\Models\Reservation;
 class DashboardController extends Controller
 {
     public function index() {
-        $events = Event::where('user_id', auth()->user()->id)->count();
-        $app_reservations = Reservation::where('status', 'approved')->count();
-        $rej_reservations = Reservation::where('status', 'rejected')->count();
-        $pend_reservations = Reservation::where('status', 'pending')->count();
+        $user_id = auth()->user()->id;
+        # get organizer events
+        $events = Event::where('user_id', $user_id)->count();
+        # get organizer reservations
+        $reservations = Reservation::where('user_id', $user_id);
+        # get organizer approved reservations
+        $app_reservations = $reservations->where('status', 'approved')->count();
+        # get organizer rejected reservations
+        $rej_reservations = $reservations->where('status', 'rejected')->count();
+        # get organizer pending reservations
+        $pend_reservations = $reservations->where('status', 'pending')->count();
+
         return view('organizer.index', compact('events', 'app_reservations', 'rej_reservations', 'pend_reservations'));
     }
 }
